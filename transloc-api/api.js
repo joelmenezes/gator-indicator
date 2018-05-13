@@ -22,6 +22,16 @@ async function getRoutesData () {
     return result;
 }
 
+// Get Segments data
+async function getSegmentsData () {
+    let result;
+    try { result = await axios.get("https://transloc-api-1-2.p.mashape.com/segments.json?agencies=116&callback=call"); }
+    catch (e) { console.error(e); }
+    return result;
+}
+
+
 
 module.exports.getStopsData = getStopsData;
 module.exports.getRoutesData = getRoutesData;
+module.exports.getSegmentsData = getSegmentsData;

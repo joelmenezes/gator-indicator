@@ -4,21 +4,23 @@ const api = require('../transloc-api/api');
 const dbCalls = require('./db-calls');
 
 let initializeDB = () => {
-    api.getStopsData().then((res) => {
+    api.getStopsData().then((routesResult) => {
         dbCalls.createStopsTable();
-        let stops = res.data.data;
+        let stops = routesResult.data.data;
         dbCalls.insertStopsData(stops);
+        return api.getRoutesData();
+    }).then((routesResult) => {
+        dbCalls.createRoutesTable();
+        let routes = routesResult.data.data['116'];
+        dbCalls.insertRoutesData(routes);
+        return api.getSegmentsData();
+    }).then((segmentsResult) => {
+        dbCalls.createSegmentsTable();
+        let segments = segmentsResult.data.data;
+        dbCalls.insertSegmentsData(segments);
         dbCalls.closeDBConnection();
-    });
-    
-    api.getRoutesData().then((res) => {
-        console.log(res.data.data);
-    });
+    })
+    .catch(err => console.error(err));
 }
 
-//initializeDB();
-
-
-api.getRoutesData().then((res) => {
-    console.log(res.data.data['116'][0]);
-});
+initializeDB();
