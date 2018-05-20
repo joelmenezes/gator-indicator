@@ -46,6 +46,13 @@ let readStops = () => {
     })
 }
 
+let readRoutesFromStopId = (stopId, callback) => {
+    db.get(`SELECT routes from stops where stop_id = ${stopId}`, (err, row) => {
+        if (err) callback(err);
+        else callback(null, row);
+    })
+}
+
 let createRoutesTable = () => {
     db.serialize(() => {
         db.run(`DROP TABLE IF EXISTS routes`);
@@ -133,3 +140,5 @@ module.exports.insertSegmentsData = insertSegmentsData;
 
 module.exports.readStops = readStops;
 module.exports.closeDBConnection = closeDBConnection;
+
+module.exports.readRoutesFromStopId = readRoutesFromStopId;

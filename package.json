@@ -10,6 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-debug": "0.0.4",
+    "express": "^4.16.3",
+    "qs": "^6.5.2",
+    "s": "^0.1.1",
     "sqlite3": "^4.0.0"
   }
 }
