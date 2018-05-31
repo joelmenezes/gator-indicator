@@ -100,6 +100,13 @@ let insertSegmentsData = (segments) => {
     })
 }
 
+let getAllStopsData = (callback) => {
+    db.all(`SELECT stop_id, latitude, longitude, routes, name FROM stops`, (err, rows) => {
+        if (err) callback(err);
+        callback(null, rows);
+    })
+}
+
 let closeDBConnection = () => {
     db.close((err) => {
         if (err) console.error(err);
@@ -142,3 +149,5 @@ module.exports.readStops = readStops;
 module.exports.closeDBConnection = closeDBConnection;
 
 module.exports.readRoutesFromStopId = readRoutesFromStopId;
+
+module.exports.getAllStopsData = getAllStopsData;

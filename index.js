@@ -2,8 +2,21 @@ const express = require('express');
 
 const api = require('./app-logic/api');
 const methods = require('./app-logic/methods');
+const db = require('./database/db-calls');
 
-let app = express();
+var app = express();
+
+var cors = require('cors');
+var bodyParser = require('body-parser');
+
+//enables cors
+app.use(cors({
+  'allowedHeaders': ['sessionId', 'Content-Type'],
+  'exposedHeaders': ['sessionId'],
+  'origin': '*',
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue': false
+}));
 
 app.get('/get-arrival-estimates', (req, res) => {
     let routes = (req.query.routes) ? req.query.routes : null;
@@ -30,7 +43,14 @@ app.get('/routing', (req, res) => {
     });
 })
 
-app.listen(3000, (err) => {
+app.get('/get-all-stops', (req, res) => {
+        db.getAllStopsData((err, response) => {
+        if (err) res.err();
+        res.send(response)
+    });
+})
+
+app.listen(5000, (err) => {
     if (err) console.error(err);
-    console.log('Server started on port 3000');
+    console.log('Server started on port 5000');
 })
