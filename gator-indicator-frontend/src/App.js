@@ -6,7 +6,7 @@ const { InfoBox } = require("react-google-maps/lib/components/addons/InfoBox");
 
 
 const busIcon = {
-  url: 'https://cdn0.iconfinder.com/data/icons/geo-points/154/bus-24.png'
+  url: 'https://www.realestate-valdeurope.com/wp-content/themes/red/images/marker/icon-bus.png'
 }
 
 const MyMapComponent = compose(
