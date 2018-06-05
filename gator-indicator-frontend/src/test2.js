@@ -23,14 +23,31 @@ export default class MapComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get('http://localhost:5000/get-all-stops')
+		axios.get('http://localhost:5000/get-all-routes')
+			.then(routesData => {
+				let routes = routesData.data;
+				this.setState({ routes })
+				return axios.get('http://localhost:5000/get-all-stops')
+			})
 			.then(res => {
 				let stops = res.data.map(el => {
+					let routes = this.state.routes;
 					var stop = Object.assign({}, el);
+					stop.routes = stop.routes.split(',');
 					stop.showInfo = false
+					
+					stop.routes = stop.routes.map(routeId => {
+						let routeData = {};
+						let indexOfRoute = routes.findIndex(route => route.route_id === parseInt(routeId));
+						routeData.route_id = routeId;
+						routeData.short_name = routes[indexOfRoute].short_name;
+						return routeData;
+					})
+
 					return stop;
 				});
-				this.setState({ stops })
+				this.setState({ stops });
+				
 			})
 	}
 	mapLoaded(map) {
@@ -40,10 +57,17 @@ export default class MapComponent extends React.Component {
 
 	markerClicked = (stop_id) => {
 		let stops = this.state.stops;
-		let indexOfStop = stops.findIndex(stop => stop.stop_id === stop_id);
+		let routes = this.state.routes;
 
+		let indexOfStop = stops.findIndex(stop => stop.stop_id === stop_id);
 		stops[indexOfStop].showInfo = !stops[indexOfStop].showInfo;
+
 		this.setState({ stops });
+	}
+
+	onRouteIdClicked = (e, route) => {
+		e.stopPropagation();
+		console.log(route);
 	}
 	render() {
 		let stops = this.state.stops;
@@ -74,8 +98,10 @@ export default class MapComponent extends React.Component {
 								}}>
 									<div style={{ fontSize: `12px`, fontColor: `#08233B` }}>
 										{stop.name}
-										<br />
-										{stop.routes}
+										<hr />
+										{stop.routes.map(route => {
+											return <span onClick = {(e) => this.onRouteIdClicked(e, route.route_id)}>{route.short_name} </span>
+										})}
 									</div>
 								</div>
 							</InfoBox>

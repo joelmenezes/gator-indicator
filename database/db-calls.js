@@ -107,6 +107,13 @@ let getAllStopsData = (callback) => {
     })
 }
 
+let getAllRoutesData = (callback) => {
+	db.all(`SELECT route_id, short_name, long_name, stops, forward_segments, backward_segments FROM routes`, (err, rows) => {
+		if (err) callback(err);
+		callback(null, rows);
+	})
+}
+
 let closeDBConnection = () => {
     db.close((err) => {
         if (err) console.error(err);
@@ -151,3 +158,4 @@ module.exports.closeDBConnection = closeDBConnection;
 module.exports.readRoutesFromStopId = readRoutesFromStopId;
 
 module.exports.getAllStopsData = getAllStopsData;
+module.exports.getAllRoutesData= getAllRoutesData;
