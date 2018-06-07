@@ -1,6 +1,8 @@
 import React from "react";
 import { Marker, withScriptjs, withGoogleMap, GoogleMap } from "react-google-maps";
 import axios from 'axios';
+import SingleSelect from './searchbox';
+
 const { InfoBox } = require("react-google-maps/lib/components/addons/InfoBox");
 
 const MyMapComponent = withScriptjs(withGoogleMap(props => {
@@ -72,6 +74,7 @@ export default class MapComponent extends React.Component {
 	render() {
 		let stops = this.state.stops;
 		return (
+			<div>
 			<MyMapComponent
 				googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpsOhFlgGnO7lyW5Nn-obvTWrTVxfQIMI&libraries=geometry,drawing,places"
 				loadingElement={<div style={{ height: `100%` }} />}
@@ -109,6 +112,8 @@ export default class MapComponent extends React.Component {
 					</Marker>
 				})}
 			</MyMapComponent>
+			<SingleSelect stops={this.state.stops} />
+			</div>
 		)
 	}
 }
