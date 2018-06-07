@@ -35,6 +35,8 @@ export default class MapComponent extends React.Component {
 				let stops = res.data.map(el => {
 					let routes = this.state.routes;
 					var stop = Object.assign({}, el);
+					stop.label = stop.name;
+					stop.value = stop.stop_id;
 					stop.routes = stop.routes.split(',');
 					stop.showInfo = false
 					

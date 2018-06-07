@@ -8,20 +8,35 @@ export default class SingleSelect extends Component {
 		this.state = {}
 	}
 
-  render() {
-		console.log(this.props.stops[0]);
-    return (
-      <Fragment>
-        <Select
-          className="basic-single"
-					classNamePrefix="select"
-          isSearchable={true}
-          name="color"
-					options={this.props.stops}
-					valueKey='stop_id'
-					labelKey='stop_id'
-        />
-      </Fragment>
-    );
-  }
+	onSourceChange = (source) => {
+		console.log(source);
+	}
+
+	onDestinationChange = (destination) => {
+		console.log(destination);
+	}
+
+	render() {
+		let stops = this.props.stops.splice(0, 10);
+		return (
+			<Fragment>
+			<Select
+				placeholder="Source"
+				classNamePrefix="select"
+				isSearchable={true}
+				options={stops}
+				isClearable={true}
+				onChange={this.onSourceChange}
+			/>
+			<Select
+				placeholder="Destination"
+				classNamePrefix="select"
+				isSearchable={true}
+				options={stops}
+				isClearable={true}
+				onChange={this.onDestinationChange}
+			/>
+			</Fragment>
+		);
+	}
 }
